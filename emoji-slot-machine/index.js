@@ -11,15 +11,46 @@
 */ 
 
 const slotMachine = document.querySelector('.emoji-slots-game'); 
-const food = 'https://apis.scrimba.com/emojihub/api/all/category/food-and-drink';
+const url = 'https://apis.scrimba.com/emojihub/api/all/category/food-and-drink';
 
-function makeFruitArray(arr){
-   
+async function makeFruitArray(callbackFn) {
+   return await callbackFn
+    .then(foodArray => foodArray.filter(food => food.group === "food fruit"));
 }
 
-function getRandomFruits(arr){
+async function getRandomFruits(callbackFn) {
+  // How can I get 9 random numbers?
+  const fruits = await makeFruitArray(getFruits())
+    .then(data => data)
+    .catch(error => console.log(`Something went wrong...: ${error}`));
+  
+  const randomFruits = [];
 
+  while (randomFruits.length <= 9) {
+    if (!randomFruits.includes(fruits[getRandomIndex(fruits)])) {
+      randomFruits.push(fruits[getRandomIndex(fruits)]);
+    }
+  }
 }
 
 // write your fetch request here 
-console.log("hello!")
+async function getFruits() {
+  const response = await fetch(url);
+  const data = await response.json();
+
+  return data;
+}
+
+function getRandomIndex(arr) {
+  return Math.floor(Math.random() * arr.length);
+}
+
+// getFruits(url)
+//   .then(data => console.log(data))
+//   .catch(error => console.error(error))
+
+// makeFruitArray(getFruits())
+//   .then(data => console.log(data));
+
+getRandomFruits(makeFruitArray(getFruits()))
+  .then(data => console.log(data));
