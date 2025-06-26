@@ -27,7 +27,7 @@ async function getRandomFruits(callbackFn) {
 
   const randomFruits = [];
 
-  while (randomFruits.length <= 8) {
+  while (randomFruits.length < 9) {
     if (!randomFruits.includes(fruits[getRandomIndex(fruits)])) {
       randomFruits.push(fruits[getRandomIndex(fruits)]);
     }
